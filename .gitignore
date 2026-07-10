@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+*.log
+*.tsbuildinfo
+
+backend/.env
+backend/venv/
+backend/data/
+backend/__pycache__/
+backend/**/*.pyc
+
+android/.gradle/
+android/local.properties
+android/**/build/
+android/captures/
+

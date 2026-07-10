@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: moodgarden
+      POSTGRES_USER: moodgarden
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-moodgarden-dev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-moodgarden}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-moodgarden-dev-secret}
+    volumes:
+      - minio_data:/data
+
+  backend:
+    build: ./backend
+    env_file: ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://moodgarden:${POSTGRES_PASSWORD:-moodgarden-dev}@postgres:5432/moodgarden
+      S3_ENDPOINT_URL: http://minio:9000
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER:-moodgarden}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-moodgarden-dev-secret}
+      S3_BUCKET: moodgarden
+      S3_PUBLIC_URL: https://${DOMAIN:-localhost}/storage/moodgarden
+      DEBUG: "false"
+      CHROMA_PATH: /app/data/chroma
+    volumes:
+      - backend_data:/app/data
+    depends_on: [postgres, minio]
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+
+  caddy:
+    image: caddy:2-alpine
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [backend, web]
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ["9090:9090"]
+
+volumes:
+  postgres_data:
+  minio_data:
+  caddy_data:
+  caddy_config:
+  backend_data:

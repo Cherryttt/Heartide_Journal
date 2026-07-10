@@ -1,0 +1,22 @@
+# MoodGarden backend dependencies
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+sqlalchemy==2.0.36
+alembic==1.14.0
+numpy
+httpx==0.28.1
+python-multipart==0.0.18
+sentence-transformers==3.3.1
+pillow==11.0.0
+python-dotenv==1.0.1
+jieba
+joblib
+scikit-learn
+psycopg[binary]
+python-jose[cryptography]
+passlib
+boto3
+prometheus-client
+pytest

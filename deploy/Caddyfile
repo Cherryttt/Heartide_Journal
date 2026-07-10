@@ -1,0 +1,22 @@
+{$DOMAIN:localhost} {
+  encode zstd gzip
+  header {
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "DENY"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    Permissions-Policy "geolocation=(self), camera=(), microphone=()"
+    Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' data: https://cdn.jsdelivr.net; img-src 'self' data: blob: https:; connect-src 'self' https://api.open-meteo.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+  }
+  handle /api/* {
+    reverse_proxy backend:8000
+  }
+  handle /uploads/* {
+    reverse_proxy backend:8000
+  }
+  handle_path /storage/* {
+    reverse_proxy minio:9000
+  }
+  handle {
+    reverse_proxy web:80
+  }
+}
