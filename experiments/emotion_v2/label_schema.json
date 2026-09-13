@@ -1,0 +1,43 @@
+{
+  "task": "smp2020_original_six_class",
+  "label_order": [
+    "neutral",
+    "happy",
+    "sad",
+    "angry",
+    "fear",
+    "surprise"
+  ],
+  "labels": [
+    {
+      "id": 0,
+      "name": "neutral",
+      "zh": "无情绪"
+    },
+    {
+      "id": 1,
+      "name": "happy",
+      "zh": "积极"
+    },
+    {
+      "id": 2,
+      "name": "sad",
+      "zh": "悲伤"
+    },
+    {
+      "id": 3,
+      "name": "angry",
+      "zh": "愤怒"
+    },
+    {
+      "id": 4,
+      "name": "fear",
+      "zh": "恐惧"
+    },
+    {
+      "id": 5,
+      "name": "surprise",
+      "zh": "惊奇"
+    }
+  ]
+}

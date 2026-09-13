@@ -1,0 +1,7 @@
+model_id,domain,support,accuracy,macro_f1
+dummy_most_frequent,usual,4962,0.20515921,0.05674470
+dummy_most_frequent,virus,2757,0.49256438,0.11000405
+016_logreg_word_char_c1_weightbalanced,usual,4962,0.72934301,0.70068173
+016_logreg_word_char_c1_weightbalanced,virus,2757,0.74283642,0.61351777
+macbert_lr1e-5_seed42_4090,usual,4962,0.78436114,0.75800405
+macbert_lr1e-5_seed42_4090,virus,2757,0.76858905,0.62808452

@@ -1,0 +1,4 @@
+model_id,accuracy,macro_f1,surprise_f1,support,note
+dummy_most_frequent,0.30781189,0.07845468,0.00000000,7719,Majority label baseline fitted from train labels only.
+016_logreg_word_char_c1_weightbalanced,0.73416246,0.68415343,0.54842220,7719,Validation-selected best classical model.
+macbert_lr1e-5_seed42_4090,0.77872781,0.73131393,0.61411765,7719,Validation-selected best MacBERT checkpoint.

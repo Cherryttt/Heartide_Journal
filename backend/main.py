@@ -981,8 +981,11 @@ async def health():
         "object_storage_configured": storage_configured(),
         "embedding_model": settings.embedding_model,
         "emotion_model_loaded": classifier.model is not None,
-        "emotion_model_calibrated": bool(classifier.model and hasattr(classifier.model.get("clf"), "predict_proba")),
-        "emotion_model_metrics": classifier.model.get("metrics", {}) if classifier.model else {},
+        "emotion_model_calibrated": bool(
+            classifier.model
+            and hasattr((classifier.model.get("classifier") if isinstance(classifier.model, dict) else None), "predict_proba")
+        ),
+        "emotion_model_metrics": classifier.model.get("validation_metrics", {}) if isinstance(classifier.model, dict) else {},
     }
 
 

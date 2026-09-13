@@ -22,11 +22,11 @@ def blank_profile():
 
 def test_today_emotion_changes_ranking_and_reason():
     profile = blank_profile()
-    profile["today_tags"]["焦虑"] = 3
+    profile["today_tags"]["恐惧"] = 3
     items, summary = rank_catalog(profile, count=3)
-    assert "焦虑" in items[0]["tags"]
+    assert "恐惧" in items[0]["tags"]
     assert "今天" in items[0]["reason"]
-    assert summary == ["今日情绪：焦虑"]
+    assert summary == ["今日情绪：恐惧"]
 
 
 def test_dislike_reduces_same_item_score():
@@ -58,14 +58,14 @@ def test_real_quotes_and_synced_shelf_join_candidate_pool():
     Base.metadata.create_all(engine)
     db = sessionmaker(bind=engine)()
     db.add(Book(id="book-1", title="真实的书", author="真实作者", category="散文", cover="#123456"))
-    db.add(Quote(id="quote-1", user_id="user-1", book_id="book-1", quote_text="这是用户真实保存的句子。", tags=["平静"]))
+    db.add(Quote(id="quote-1", user_id="user-1", book_id="book-1", quote_text="这是用户真实保存的句子。", tags=["无情绪"]))
     db.add(UserState(user_id="user-1", state={"books": [{
         "id": "local-1",
         "title": "本地书架",
         "author": "本地作者",
         "category": "文学",
         "sampleQuote": "这是从本地书架同步来的句子。",
-        "sampleTags": ["治愈"],
+        "sampleTags": ["积极"],
     }]}))
     db.commit()
 
@@ -99,7 +99,7 @@ def test_book_feedback_changes_related_book_score():
 
 def test_dislike_feedback_hides_exact_item_even_when_mood_matches():
     profile = blank_profile()
-    profile["today_tags"]["焦虑"] = 5
+    profile["today_tags"]["恐惧"] = 5
     profile["feedback_by_item"]["meditations-1"] = -16
     items, _ = rank_catalog(profile, count=5)
     assert all(item["id"] != "meditations-1" for item in items[:3])

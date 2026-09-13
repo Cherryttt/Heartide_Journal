@@ -1,0 +1,56 @@
+{
+  "run_id": "macbert_lr2e-5_seed42_4090",
+  "model_name": "hfl/chinese-macbert-base",
+  "started_from_pretrained": true,
+  "seed": 42,
+  "lr": 2e-05,
+  "epochs_requested": 5,
+  "best_epoch": 2,
+  "best_validation_macro_f1": 0.7186974577082511,
+  "device": "NVIDIA GeForce RTX 4090",
+  "train_size": 33844,
+  "validation_size": 3712,
+  "max_length": 256,
+  "length_info": {
+    "sample_size": 5000,
+    "max_observed_length": 160,
+    "p99_bucket": 256,
+    "estimated_truncated_ratio": 0.0,
+    "mode": "auto_train_only"
+  },
+  "batch_size": 16,
+  "effective_batch_size": 32,
+  "gradient_accumulation_steps": 2,
+  "metrics": [
+    {
+      "epoch": 1,
+      "train_loss": 0.82014989674035,
+      "validation_accuracy": 0.7685883620689655,
+      "validation_macro_f1": 0.7120877467104488,
+      "seconds": 166.8966498374939
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.505300929863182,
+      "validation_accuracy": 0.7764008620689655,
+      "validation_macro_f1": 0.7186974577082511,
+      "seconds": 168.11741662025452
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.3421025444367911,
+      "validation_accuracy": 0.7718211206896551,
+      "validation_macro_f1": 0.7163589609278485,
+      "seconds": 166.97272372245789
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.22030006132585073,
+      "validation_accuracy": 0.7669719827586207,
+      "validation_macro_f1": 0.7102068249158476,
+      "seconds": 167.87245678901672
+    }
+  ],
+  "seconds": 670.6113526821136,
+  "test_access": "not_used"
+}

@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { generateJournalImage, generatePoem, rewriteFragments } from '../api';
 import { useStore } from '../store';
 import { notifyLocalStateChanged } from '../cloudSync';
+import { EMOTION_META, getEmotionDisplay } from '../emotionMeta';
 
 const STYLES = ['保留原声', '海子', '村上春树', '聂鲁达', '泰戈尔'];
 // 更丰富的贴纸 + 和纸胶带(washi tape)
@@ -14,14 +15,12 @@ const JOURNAL_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 // 翻页旋转与卷曲阴影必须用同一时长,否则阴影会和纸张脱节。
 const TURN_DURATION = 0.62;
 const PAPER_BY_MOOD: Record<string, { paper: string; ink: string; accent: string }> = {
-  开心: { paper: '#fff1c7', ink: '#704d28', accent: '#e5aa45' },
-  治愈: { paper: '#e3eee0', ink: '#405a42', accent: '#7b9d73' },
-  平静: { paper: '#e5edf0', ink: '#405b67', accent: '#7ba3b2' },
-  放松: { paper: '#dcecf0', ink: '#365a68', accent: '#72a5b5' },
-  忧郁: { paper: '#dfe5e7', ink: '#46565f', accent: '#7c929d' },
-  焦虑: { paper: '#ebe3ed', ink: '#5c4c63', accent: '#9a80a2' },
-  疲惫: { paper: '#e9e1d7', ink: '#5f5145', accent: '#9c8874' },
-  孤独: { paper: '#dfe3eb', ink: '#424c64', accent: '#77849e' },
+  无情绪: { paper: '#e6e5df', ink: '#545a5d', accent: EMOTION_META.无情绪.color },
+  积极: { paper: '#fff1c7', ink: '#704d28', accent: EMOTION_META.积极.color },
+  悲伤: { paper: '#dfe5e7', ink: '#46565f', accent: EMOTION_META.悲伤.color },
+  愤怒: { paper: '#f0ddd4', ink: '#6d3d32', accent: EMOTION_META.愤怒.color },
+  恐惧: { paper: '#ebe3ed', ink: '#5c4c63', accent: EMOTION_META.恐惧.color },
+  惊奇: { paper: '#dcecf0', ink: '#365a68', accent: EMOTION_META.惊奇.color },
 };
 
 interface LineSlip {
@@ -98,7 +97,7 @@ const RingBinding = () => (
 
 // 往日手帐:只读回看某一天保存的拼贴(供翻页)
 function ReadonlySpread({ data }: { data: SavedJournal }) {
-  const p = PAPER_BY_MOOD[data.mood || '平静'] || PAPER_BY_MOOD.平静;
+  const p = PAPER_BY_MOOD[data.mood || '无情绪'] || PAPER_BY_MOOD.无情绪;
   const [imageFailed, setImageFailed] = useState(false);
   const lines = data.lines || [];
   const stickers = (data.stickers || []) as Deco[];
@@ -111,7 +110,7 @@ function ReadonlySpread({ data }: { data: SavedJournal }) {
           <div className="absolute left-5 top-5 rounded-full bg-white/70 px-3 py-1 text-[10px] text-warm-700 backdrop-blur">左页 · 那天的画面</div>
         </section>
         <section className="relative min-h-[330px] overflow-hidden rounded-b-[12px] lg:min-h-[inherit] lg:rounded-r-[12px] lg:rounded-bl-none" style={{ backgroundColor: p.paper, color: p.ink, backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 27px, ${p.accent}33 27px, ${p.accent}33 28px)` }}>
-          <div className="absolute left-5 top-5 text-[10px] tracking-widest opacity-45">右页 · {data.mood || '平静'} · 往日回看</div>
+          <div className="absolute left-5 top-5 text-[10px] tracking-widest opacity-45">右页 · {getEmotionDisplay(data.mood || '无情绪')} · 往日回看</div>
           {lines.map((line) => (
             <div key={line.id} className={`absolute bg-white/75 font-hand leading-relaxed shadow-md ${line.variant === 'poem' ? 'px-4 py-3' : 'px-3 py-2'}`} style={{ left: `${line.x}%`, top: `${line.y}%`, maxWidth: line.variant === 'poem' ? '78%' : '72%', color: line.color || p.ink, fontSize: `${line.fontSize || 15}px`, transform: `rotate(${line.rotate}deg)`, borderRadius: line.variant === 'poem' ? '16px 11px 18px 13px' : '7px 13px 8px 11px', whiteSpace: 'pre-line' }}>{line.text}</div>
           ))}
@@ -139,8 +138,8 @@ export default function CollagePage() {
   const records = useStore((state) => state.records);
   const loadRecords = useStore((state) => state.loadRecords);
   const journalMaterials = useStore((state) => state.journalMaterials);
-  const mood = useStore((state) => state.todayMood)?.primaryMood || '平静';
-  const paper = PAPER_BY_MOOD[mood] || PAPER_BY_MOOD.平静;
+  const mood = useStore((state) => state.todayMood)?.primaryMood || '无情绪';
+  const paper = PAPER_BY_MOOD[mood] || PAPER_BY_MOOD.无情绪;
   const today = new Date().toDateString();
   const todayKey = new Date().toISOString().slice(0, 10);
   const todayRecords = useMemo(() => {
@@ -149,7 +148,7 @@ export default function CollagePage() {
   const sourceRecords = useMemo(() => todayRecords.slice(0, 8), [todayRecords]);
   const dailyMotif = useMemo(() => {
     const imagery = [...new Set(sourceRecords.flatMap((record) => record.imagery).filter(Boolean))].slice(0, 3);
-    return imagery.length ? imagery.join(' / ') : `${mood}的一天`;
+    return imagery.length ? imagery.join(' / ') : `${getEmotionDisplay(mood)}的一天`;
   }, [sourceRecords, mood]);
   const journalKey = `heartide-journal-${todayKey}`;
   const savedJournal = useMemo(() => {
@@ -207,7 +206,7 @@ export default function CollagePage() {
     } catch { /* use record draft below */ }
     const dayRecords = records.filter((record) => new Date(record.createdAt).toISOString().slice(0, 10) === currentDateStr);
     return {
-      mood: dayRecords[0]?.emotions[0]?.mood || '平静',
+      mood: dayRecords[0]?.emotions[0]?.mood || '无情绪',
       imageUrl: dayRecords.find((record) => record.imageUrl)?.imageUrl,
       lines: dayRecords.slice(0, 8).map((record, index) => createLine(record.id, record.text, index, paper.ink)),
       stickers: [],
@@ -551,7 +550,7 @@ export default function CollagePage() {
                           >
                             <span className="flex items-center justify-between gap-2 text-[9px] text-warm-400">
                               <span>{new Date(record.createdAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}</span>
-                              <span className="rounded-full bg-white/60 px-2 py-0.5">{pasted ? (record.imageUrl ? '文字已贴' : '已贴入') : record.imageUrl ? '图文可贴' : recordMood}</span>
+                              <span className="rounded-full bg-white/60 px-2 py-0.5">{pasted ? (record.imageUrl ? '文字已贴' : '已贴入') : record.imageUrl ? '图文可贴' : getEmotionDisplay(recordMood)}</span>
                             </span>
                             {record.imageUrl && (
                               <span className="mt-2 block overflow-hidden rounded-xl border border-white/70 bg-warm-50">
@@ -607,7 +606,7 @@ export default function CollagePage() {
                       </section>
 
                       <section ref={boardRef} onPointerDown={(event) => { if (event.target === event.currentTarget) setSelected(null); }} className="relative min-h-[330px] overflow-hidden rounded-b-[12px] touch-none lg:min-h-[inherit] lg:rounded-r-[12px] lg:rounded-bl-none" style={{ backgroundColor: paper.paper, color: paper.ink, backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 27px, ${paper.accent}33 27px, ${paper.accent}33 28px)` }}>
-                        <div className="absolute left-5 top-5 text-[10px] tracking-widest opacity-45">右页 · {mood} · {dailyMotif} · 拖动排列</div>
+                        <div className="absolute left-5 top-5 text-[10px] tracking-widest opacity-45">右页 · {getEmotionDisplay(mood)} · {dailyMotif} · 拖动排列</div>
                         {lines.map((line) => (
                           <button key={line.id} onClick={() => setSelected({ type: 'line', id: line.id })} onPointerDown={(event) => startDrag(event, line)} onPointerMove={drag} onPointerUp={endDrag} className={`absolute border-none bg-white/75 text-left font-hand leading-relaxed shadow-md cursor-grab active:cursor-grabbing ${line.variant === 'poem' ? 'px-4 py-3' : 'px-3 py-2'} ${selected?.type === 'line' && selected.id === line.id ? 'outline outline-2 outline-warm-500 outline-offset-2' : ''}`} style={{ left: `${line.x}%`, top: `${line.y}%`, maxWidth: line.variant === 'poem' ? '78%' : '72%', color: line.color || paper.ink, fontSize: `${line.fontSize || 15}px`, transform: `rotate(${line.rotate}deg)`, borderRadius: line.variant === 'poem' ? '16px 11px 18px 13px' : '7px 13px 8px 11px', whiteSpace: 'pre-line' }}>{line.text}</button>
                         ))}

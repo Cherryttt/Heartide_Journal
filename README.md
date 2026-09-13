@@ -12,6 +12,7 @@ deployment.
 ## Features
 
 - Emotion journal entries with local emotion classification.
+- Direct six-class emotion taxonomy: `无情绪`, `积极`, `悲伤`, `愤怒`, `恐惧`, `惊奇`.
 - AI-assisted writing, image understanding, collage generation, and agent chat.
 - Bookshelf, reading notes, word finder, and recommendation flows.
 - React Three Fiber scene backgrounds and companion interactions.
@@ -38,9 +39,30 @@ deployment.
 ├── backend/             # FastAPI backend, database models, ML, tests
 ├── android/             # Capacitor Android project
 ├── deploy/              # Caddy and Prometheus configuration
+├── experiments/         # Sanitized experiment reports and reproducibility scripts
 ├── scripts/             # Report/build/demo helper scripts
 ├── docker-compose.yml   # Production-style local stack
 └── package.json         # Web and Android scripts
+```
+
+## Emotion V2 Materials
+
+Sanitized six-class MacBERT experiment materials are in:
+
+```text
+experiments/emotion_v2
+```
+
+The committed materials include aggregate metrics, reports, confusion matrices,
+and reproducibility scripts. Raw train/validation/test text, per-sample
+predictions, manual review samples, local paths, and model weights are excluded.
+
+Final frozen-test result for the selected MacBERT checkpoint:
+
+```text
+Accuracy   0.77872781
+Macro-F1   0.73131393
+惊奇 F1    0.61411765
 ```
 
 ## Prerequisites

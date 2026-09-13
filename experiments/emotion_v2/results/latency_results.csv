@@ -1,0 +1,2 @@
+model_id,subset,samples,p50_ms,p95_ms,min_ms,max_ms,hardware,note
+016_logreg_word_char_c1_weightbalanced,validation_first_1000,1000,1.795100,8.573800,1.012400,24.671900,Windows-11-10.0.26200-SP0,"Batch size 1; includes tokenization, TF-IDF transform, and classifier prediction; excludes one-time model load."

@@ -12,6 +12,7 @@ import { APP_NAME } from '../brand';
 import { topRecommendation } from '../data/readingFeed';
 import type { FeedItem } from '../data/readingFeed';
 import type { TodayMood } from '../types';
+import { getEmotionDisplay } from '../emotionMeta';
 import SceneBackground from '../components/scene/SceneBackground';
 import SceneCompanion from '../components/scene/companions/SceneCompanion';
 import {
@@ -1437,14 +1438,14 @@ function ForegroundFX({ base, time, weatherKind, effect, pokeNonce }: { base: Sc
 // 主页 UI
 // ============================================================
 const mockToday: TodayMood = {
-  primaryMood: '治愈',
-  secondaryMoods: ['平静', '放松'],
+  primaryMood: '积极',
+  secondaryMoods: ['无情绪', '惊奇'],
   scene: '蓝色大海',
   valence: 0.72,
   arousal: 0.35,
-  quote: '你心里有很多潮汐，但海也一直在那里。',
+  quote: '今天有一点光，正好落在你愿意向前的地方。',
   imagery: ['海', '晚霞', '窗边'],
-  tags: ['治愈', '海', '晚霞', '平静'],
+  tags: ['欣然', '海', '晚霞', '无波'],
 };
 
 type EffectKind = '无' | '萤火' | '花瓣' | '海鸥' | '烟花' | '流星';
@@ -1895,7 +1896,7 @@ export default function HomePage() {
               <div className="mt-1 text-[9px] tracking-[0.35em] opacity-75">HEARTIDE JOURNAL</div>
             </div>
             <div className="flex items-center gap-1.5 glass rounded-[20px] px-3 py-1.5 text-xs">
-              🌊 {hasMoodData ? <>今日 <b>{todayMood.primaryMood}</b></> : <span>待你记录</span>}
+              🌊 {hasMoodData ? <>今日 <b>{getEmotionDisplay(todayMood.primaryMood)}</b></> : <span>待你记录</span>}
             </div>
           </div>
           {/* 日期 · 天气(点击重新定位) */}

@@ -1,22 +1,21 @@
-from emotion_classifier import MOOD_COLORS, bridge_base_probabilities, classifier
+from emotion_classifier import classifier
 
 
-def test_bridge_outputs_product_twelve_label_space():
-    emotions = bridge_base_probabilities({"平静": 0.7, "忧郁": 0.3}, "一个人安静地看海")
-    assert emotions
-    assert all(item["mood"] in MOOD_COLORS for item in emotions)
-    assert any(item["mood"] in {"安静", "孤独", "平静"} for item in emotions)
+def test_classifier_outputs_six_class_label_space():
+    result = classifier.classify("今天有点焦虑，也有点害怕")
+    assert result["emotions"]
+    assert {item["mood"] for item in result["emotions"]} <= {"无情绪", "积极", "悲伤", "愤怒", "恐惧", "惊奇"}
 
 
-def test_negated_anxiety_is_not_directly_boosted():
-    emotions = bridge_base_probabilities({"平静": 0.55, "焦虑": 0.45}, "我一点也不焦虑，终于做完了")
-    assert emotions[0]["mood"] != "焦虑"
-
-
-def test_explicit_anxiety_keyword_is_prioritized():
-    result = classifier.classify("今天有点焦虑")
-    assert result["emotions"][0]["mood"] == "焦虑"
+def test_explicit_fear_keyword_is_prioritized():
+    result = classifier.classify("今天有点害怕，心里发慌")
+    assert result["emotions"][0]["mood"] == "恐惧"
     assert result["confidence"] >= 0.6
+
+
+def test_positive_keyword_stays_positive():
+    result = classifier.classify("今天很开心，事情终于有了好结果")
+    assert result["emotions"][0]["mood"] == "积极"
 
 
 def test_model_result_has_confidence_and_fallback_decision():
@@ -27,6 +26,8 @@ def test_model_result_has_confidence_and_fallback_decision():
         "uncalibrated_ml",
         "calibrated_ml+rules",
         "uncalibrated_ml+rules",
+        "v2_classical_ml",
+        "v2_classical_ml+rules",
         "rules",
     }
     assert isinstance(result["needs_llm_fallback"], bool)

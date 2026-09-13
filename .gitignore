@@ -3,6 +3,7 @@ dist/
 .env
 *.log
 *.tsbuildinfo
+.pytest_data/
 
 backend/.env
 backend/venv/
@@ -10,8 +11,22 @@ backend/data/
 backend/__pycache__/
 backend/**/*.pyc
 
+# Experiment privacy / size guardrails
+experiments/**/data/*.csv
+experiments/**/results/predictions/
+experiments/**/results/error_analysis*.csv
+experiments/**/*review*.csv
+experiments/**/*review*.tsv
+experiments/**/*review*.md
+experiments/**/*素材库*.md
+experiments/**/*.safetensors
+experiments/**/*.joblib
+experiments/**/*.zip
+experiments/**/*.tar.gz
+experiments/**/__pycache__/
+experiments/**/*.pyc
+
 android/.gradle/
 android/local.properties
 android/**/build/
 android/captures/
-

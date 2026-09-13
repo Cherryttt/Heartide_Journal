@@ -5,21 +5,9 @@ import { analyzeEmotion, createRecord, findWord, healthCheck, saveWord, uploadAs
 import type { RecordResponse } from '../api';
 import type { EmotionAnalysis, EmotionItem, HealthResponse, WordResponse } from '../api';
 import type { Mood, RecordType } from '../types';
+import { EMOTION_LIST, EMOTION_META, getEmotionDisplay, isCanonicalMood } from '../emotionMeta';
 
-const MOODS: { key: Mood; emoji: string; color: string }[] = [
-  { key: '开心', emoji: '😊', color: '#f0a040' },
-  { key: '期待', emoji: '🌟', color: '#c0a040' },
-  { key: '激动', emoji: '🎆', color: '#e06060' },
-  { key: '治愈', emoji: '🌿', color: '#8ab84a' },
-  { key: '平静', emoji: '😌', color: '#6fa9c4' },
-  { key: '放松', emoji: '🌊', color: '#7fb0c4' },
-  { key: '忧郁', emoji: '🌧️', color: '#6a8a9a' },
-  { key: '焦虑', emoji: '💫', color: '#a080b0' },
-  { key: '疲惫', emoji: '😴', color: '#8a7a6a' },
-  { key: '孤独', emoji: '🌙', color: '#5a6a8a' },
-  { key: '空白', emoji: '🌫️', color: '#a0a0a0' },
-  { key: '安静', emoji: '🌌', color: '#4a5a7a' },
-];
+const MOODS = EMOTION_LIST.map((key) => ({ key, ...EMOTION_META[key] }));
 
 const WORD_CACHE_KEY = 'heartide-word-cache';
 const FALLBACK_WORDS: WordResponse[] = [
@@ -96,20 +84,21 @@ function localAnalyze(text: string): EmotionAnalysis {
   const emotions: EmotionItem[] = [];
 
   const rules: [Mood, string, string][] = [
-    ['开心', '😊', '#f0a040'], ['治愈', '🌿', '#8ab84a'], ['疲惫', '😴', '#8a7a6a'],
-    ['平静', '😌', '#6fa9c4'], ['放松', '🌊', '#7fb0c4'], ['期待', '🌟', '#c0a040'],
-    ['忧郁', '🌧️', '#6a8a9a'], ['孤独', '🌙', '#5a6a8a'],
+    ['无情绪', EMOTION_META.无情绪.emoji, EMOTION_META.无情绪.color],
+    ['积极', EMOTION_META.积极.emoji, EMOTION_META.积极.color],
+    ['悲伤', EMOTION_META.悲伤.emoji, EMOTION_META.悲伤.color],
+    ['愤怒', EMOTION_META.愤怒.emoji, EMOTION_META.愤怒.color],
+    ['恐惧', EMOTION_META.恐惧.emoji, EMOTION_META.恐惧.color],
+    ['惊奇', EMOTION_META.惊奇.emoji, EMOTION_META.惊奇.color],
   ];
 
   const kwMap: Record<string, string[]> = {
-    '开心': ['开心', '快乐', '高兴', '笑'],
-    '治愈': ['花', '雏菊', '绿色', '好看', '治愈'],
-    '疲惫': ['雨', '累', '疲惫'],
-    '平静': ['安静', '慢慢'],
-    '放松': ['海', '风', '自由'],
-    '期待': ['期待', '明天'],
-    '忧郁': ['难过', '悲伤'],
-    '孤独': ['一个人', '孤独'],
+    '无情绪': ['无感', '没感觉', '麻木', '空白', '平静', '安静'],
+    '积极': ['开心', '快乐', '高兴', '笑', '幸福', '顺利'],
+    '悲伤': ['难过', '悲伤', '伤心', '低落', '委屈'],
+    '愤怒': ['愤怒', '生气', '气死', '火大', '恼火', '烦死'],
+    '恐惧': ['害怕', '恐惧', '焦虑', '担心', '紧张', '心慌'],
+    '惊奇': ['惊讶', '惊奇', '意外', '没想到', '震惊', '吓一跳'],
   };
 
   for (const [mood, emoji, color] of rules) {
@@ -121,7 +110,7 @@ function localAnalyze(text: string): EmotionAnalysis {
   }
 
   if (emotions.length === 0) {
-    emotions.push({ mood: '平静', probability: 0.5, color: '#6fa9c4' });
+    emotions.push({ mood: '无情绪', probability: 0.5, color: EMOTION_META.无情绪.color });
   }
   emotions.sort((a, b) => b.probability - a.probability);
 
@@ -245,8 +234,7 @@ export default function RecordPage() {
       return;
     }
     setSaving(true);
-    const emo = selectedMood || topEmotion?.mood || '平静';
-    const moodInfo = MOODS.find((m) => m.key === emo);
+    const emo = selectedMood || (isCanonicalMood(topEmotion?.mood) ? topEmotion.mood : undefined) || '无情绪';
 
     let uploadedImageUrl = '';
     let cloudSaved = false;
@@ -372,7 +360,7 @@ export default function RecordPage() {
                 backgroundColor: (selectedMood || topEmotion?.mood) === m.key ? m.color : undefined,
               }}
             >
-              {m.emoji} {m.key}
+              {m.emoji} {m.display}
             </button>
           ))}
         </div>
@@ -392,7 +380,7 @@ export default function RecordPage() {
               {/* 情绪条 */}
               {topEmotion && (
                 <div className="flex items-center gap-2.5 mb-3">
-                  <span className="text-[15px] font-bold text-warm-700">{topEmotion.mood}</span>
+                  <span className="text-[15px] font-bold text-warm-700">{getEmotionDisplay(topEmotion.mood)}</span>
                   <div className="flex-1 h-[7px] rounded-full bg-warm-200 overflow-hidden">
                     <div
                       className="h-full rounded-full transition-all duration-500"
@@ -421,7 +409,7 @@ export default function RecordPage() {
                 <div className="flex flex-wrap gap-1.5">
                   {analysis.tags.map((tag) => (
                     <span key={tag} className="chip">
-                      {tag}
+                      {getEmotionDisplay(tag) === `${tag}（旧）` ? tag : getEmotionDisplay(tag)}
                       <span className="opacity-40 text-[10px] ml-1 cursor-pointer hover:text-red-400">✕</span>
                     </span>
                   ))}

@@ -3,6 +3,7 @@ import type { Record as MoodRecord, TodayMood, UserProfile, Persona, AgentMessag
 import { listRecords } from './api';
 import type { RecordResponse } from './api';
 import { notifyLocalStateChanged } from './cloudSync';
+import { EMOTION_META, getEmotionDisplay, isCanonicalMood } from './emotionMeta';
 
 // —— 书架持久化:行为驱动,新用户为空,收藏书摘后书会自己上架 ——
 const BOOKS_KEY = 'moodgarden-books';
@@ -30,7 +31,7 @@ const mapRecordResponse = (item: RecordResponse): MoodRecord => ({
   valence: item.valence,
   arousal: item.arousal,
   intensity: Math.max(...item.emotions.map((emotion) => emotion.probability), 0.5),
-  manualMood: item.manual_mood as Mood | undefined,
+  manualMood: isCanonicalMood(item.manual_mood) ? item.manual_mood : undefined,
   imageUrl: item.image_url,
   createdAt: item.created_at,
 });
@@ -44,47 +45,25 @@ interface AddBookInput {
   tags?: string[];
 }
 
-const SCENE_BY_MOOD: { [key: string]: TodayMood['scene'] } = {
-  开心: '森林晨光', 期待: '云海日出', 激动: '海上夜空烟花',
-  治愈: '阳光草坪', 平静: '阳光草坪', 放松: '蓝色大海',
-  忧郁: '蓝色大海', 焦虑: '蓝色大海', 疲惫: '雨天窗边',
-  孤独: '雨天窗边', 空白: '星空夜晚', 安静: '星空夜晚',
-};
-
-const QUOTE_BY_MOOD: { [key: string]: string } = {
-  开心: '今天的光落得刚刚好，也落在你身上。',
-  期待: '有些好事正在路上，慢一点也没关系。',
-  激动: '你的心里有烟花，世界也听见了。',
-  治愈: '你正在把自己轻轻放回生活里。',
-  平静: '风经过以后，水面会重新看见天空。',
-  放松: '海一直都在，不必急着抵达。',
-  忧郁: '你心里有很多潮汐，但海也一直在那里。',
-  焦虑: '先把呼吸还给自己，事情可以一件件来。',
-  疲惫: '今天走到这里，已经很不容易了。',
-  孤独: '即使一个人走，月光也会把路照亮。',
-  空白: '空白不是没有发生，它也在替你休息。',
-  安静: '安静地待一会儿，也是一种回答。',
-};
-
 function deriveTodayMood(records: MoodRecord[]): TodayMood {
   const today = new Date().toDateString();
   const todaysRecords = records.filter((record) => new Date(record.createdAt).toDateString() === today);
   const source = todaysRecords.length ? todaysRecords : records.slice(0, 1);
   const scores = new Map<string, number>();
   source.forEach((record) => record.emotions.forEach((emotion) => {
-    scores.set(emotion.mood, (scores.get(emotion.mood) || 0) + emotion.probability);
+    if (isCanonicalMood(emotion.mood)) scores.set(emotion.mood, (scores.get(emotion.mood) || 0) + emotion.probability);
   }));
   const ranked = [...scores.entries()].sort((a, b) => b[1] - a[1]).map(([mood]) => mood) as TodayMood['secondaryMoods'];
-  const primaryMood = ranked[0] || '平静';
+  const primaryMood = ranked[0] || '无情绪';
   const imagery = [...new Set(source.flatMap((record) => record.imagery))].slice(0, 3);
-  const tags = [...new Set([primaryMood, ...source.flatMap((record) => record.tags), ...imagery])].slice(0, 5);
+  const tags = [...new Set([getEmotionDisplay(primaryMood), ...source.flatMap((record) => record.tags), ...imagery])].slice(0, 5);
   return {
     primaryMood,
     secondaryMoods: ranked.slice(1, 3),
-    scene: SCENE_BY_MOOD[primaryMood] || '落日海边',
+    scene: EMOTION_META[primaryMood].scene,
     valence: source.reduce((sum, record) => sum + record.valence, 0) / Math.max(source.length, 1),
     arousal: source.reduce((sum, record) => sum + record.arousal, 0) / Math.max(source.length, 1),
-    quote: QUOTE_BY_MOOD[primaryMood] || QUOTE_BY_MOOD.平静,
+    quote: EMOTION_META[primaryMood].quote,
     imagery: imagery.length ? imagery : ['风', '光'],
     tags,
   };

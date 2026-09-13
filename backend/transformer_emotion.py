@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Optional
 
 
-DEFAULT_LABELS = ["平静", "开心", "忧郁", "焦虑", "疲惫"]
+DEFAULT_LABELS = ["neutral", "happy", "sad", "angry", "fear", "surprise"]
 
 
 class TransformerEmotionModel:

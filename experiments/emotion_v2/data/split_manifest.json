@@ -1,0 +1,92 @@
+{
+  "experiment": "emotion_v2",
+  "created_date": "2026-09-11",
+  "task": "SMP2020-EWECT original six-class emotion classification",
+  "label_order": [
+    "neutral",
+    "happy",
+    "sad",
+    "angry",
+    "fear",
+    "surprise"
+  ],
+  "split_priority_for_duplicates": "test > validation > train",
+  "cleaning_rules": [
+    "Unicode NFKC normalization",
+    "URL masking to <URL>",
+    "mention masking to <USER>",
+    "whitespace normalization",
+    "reject empty text and labels outside the original six classes only"
+  ],
+  "historical_exposure_note": "源 test 在项目历史实验中可能已有部分文本进入过训练或开发；本轮未参与训练和模型选择的保留测试集会从本实验开始冻结使用，但不能表述为全新独立测试集。",
+  "source_hashes_sha256": {
+    "usual_train.txt": "cc2c7dbc8880596ff6af93dfbcd42701e6c97f200af52701da22f2e02980ada8",
+    "virus_train.txt": "bbc11bf83d64ffe1286f83de11c8c6203a9a1d451be9457017b434e9ab2fb31d",
+    "usual_eval_labeled.txt": "f61d8dafd25ea3794b1b4fe64b6aa21d05f86636442f36fac966dd26605ff3f9",
+    "virus_eval_labeled.txt": "f4e62d00a018712d9553e3ffbe364095587f1b9db6b58c5911f13368bb412b3b",
+    "usual_test_labeled.txt": "f23f3f4bef48dbbde1a1d56e3455691f32af47b206273bc2e745c9900837ccd9",
+    "virus_test_labeled.txt": "06eaf697338978a03ed83974306ae20d9bad567e07294aecd57fc5cc2a74d62d"
+  },
+  "source_raw_counts": {
+    "usual_train.txt": 27730,
+    "virus_train.txt": 8592,
+    "usual_eval_labeled.txt": 2000,
+    "virus_eval_labeled.txt": 2000,
+    "usual_test_labeled.txt": 5000,
+    "virus_test_labeled.txt": 3000
+  },
+  "frozen_counts_by_split": {
+    "test": 7719,
+    "train": 33844,
+    "validation": 3712
+  },
+  "frozen_counts_by_label": {
+    "angry": 11567,
+    "fear": 2226,
+    "happy": 12328,
+    "neutral": 9250,
+    "sad": 7080,
+    "surprise": 2824
+  },
+  "frozen_counts_by_split_label": {
+    "train": {
+      "neutral": 6941,
+      "happy": 8801,
+      "sad": 5491,
+      "angry": 8763,
+      "fear": 1675,
+      "surprise": 2173
+    },
+    "validation": {
+      "neutral": 838,
+      "happy": 1151,
+      "sad": 487,
+      "angry": 864,
+      "fear": 160,
+      "surprise": 212
+    },
+    "test": {
+      "neutral": 1471,
+      "happy": 2376,
+      "sad": 1102,
+      "angry": 1940,
+      "fear": 391,
+      "surprise": 439
+    }
+  },
+  "frozen_counts_by_domain": {
+    "usual": 33553,
+    "virus": 11722
+  },
+  "excluded_counts_by_reason": {
+    "duplicate_lower_priority": 1692,
+    "duplicate_same_priority": 1333,
+    "empty_text": 22
+  },
+  "output_hashes_sha256": {
+    "excluded_rows.csv": "9021be2d34afe5a49b336110628e17a805d3e5101139eeb4f229afaadbe41e44",
+    "test.csv": "c826e2a368d63ce8ac544d094dfd1a037bb7a4bf1166bdda54b55646def7b815",
+    "train.csv": "0b9577a54a99ebade42bb45273bef39b0ae8cfef2ee039812116bb59e7f935ac",
+    "validation.csv": "3932f4f7990eb8eeb5bcbc6a59852d09627be4a1c46df904dadf5baf07148fb5"
+  }
+}

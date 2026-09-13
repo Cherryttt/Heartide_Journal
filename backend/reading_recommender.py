@@ -8,18 +8,18 @@ from safety import detect_crisis
 
 
 CATALOG = [
-    {"id": "bird-1", "quote": "世界以痛吻我，要我报之以歌。", "book": "飞鸟集", "author": "泰戈尔", "cover": "#c0a040", "bg_color": "#e8f0f2", "text_color": "#3a5a6a", "passage": "世界以痛吻我，要我报之以歌。", "tags": ["治愈", "诗歌", "温柔", "忧郁"]},
-    {"id": "ditan-1", "quote": "死是一件不必急于求成的事。", "book": "我与地坛", "author": "史铁生", "cover": "#6a8a5e", "bg_color": "#eaf1e8", "text_color": "#3a5a3a", "passage": "死是一件不必急于求成的事，死是一个必然会降临的节日。", "tags": ["生命", "散文", "平静", "成长"]},
-    {"id": "forest-1", "quote": "有些黑暗你没法绕开，只能穿过它。", "book": "挪威的森林", "author": "村上春树", "cover": "#5f86a0", "bg_color": "#e8eef0", "text_color": "#3a4a5a", "passage": "有些黑暗你没法绕开，只能穿过它。穿过它之后，你会成为稍微不同的人。", "tags": ["孤独", "文学", "疲惫", "成长"]},
-    {"id": "sisyphus-1", "quote": "重要的不是治愈，而是带着病痛活下去。", "book": "西西弗神话", "author": "加缪", "cover": "#9a7a52", "bg_color": "#f0ece4", "text_color": "#4a3a2a", "passage": "在荒诞中保持清醒，本身就是一种反抗。", "tags": ["哲学", "焦虑", "生命", "坚韧"]},
-    {"id": "haizi-1", "quote": "面朝大海，春暖花开。", "book": "海子的诗", "author": "海子", "cover": "#4a80a0", "bg_color": "#e8f0f4", "text_color": "#2a4a6a", "passage": "从明天起，做一个幸福的人。", "tags": ["海", "诗歌", "自由", "开心"]},
-    {"id": "prince-1", "quote": "真正重要的东西，用眼睛是看不见的。", "book": "小王子", "author": "圣埃克苏佩里", "cover": "#c08840", "bg_color": "#f4eddf", "text_color": "#6d5432", "passage": "正因为你为你的玫瑰花费了时间，它才变得如此重要。", "tags": ["童心", "温柔", "文学", "治愈"]},
-    {"id": "food-1", "quote": "自由就是成为自己的可能。", "book": "人间食粮", "author": "纪德", "cover": "#8a9a6a", "bg_color": "#edf0e5", "text_color": "#48523d", "passage": "自由并不是逃离，而是成为自己的可能。", "tags": ["自由", "散文", "成长", "放松"]},
-    {"id": "meditations-1", "quote": "困扰人的不是事情本身，而是人们对事情的看法。", "book": "沉思录", "author": "马可·奥勒留", "cover": "#7a6a5a", "bg_color": "#ebe8e2", "text_color": "#50483e", "passage": "你可以在任何时刻回到自己的内心。", "tags": ["哲学", "焦虑", "平静", "自我"]},
-    {"id": "walden-1", "quote": "我愿意深深地扎入生活。", "book": "瓦尔登湖", "author": "梭罗", "cover": "#708a68", "bg_color": "#e8efe6", "text_color": "#3d523d", "passage": "我愿意深深地扎入生活，吸取生命中所有的精华。", "tags": ["自然", "安静", "散文", "平静"]},
-    {"id": "moon-1", "quote": "满地都是六便士，他却抬头看见了月亮。", "book": "月亮与六便士", "author": "毛姆", "cover": "#74658a", "bg_color": "#ece9f2", "text_color": "#4b405d", "passage": "人们随时随地生活在自己的世界里。", "tags": ["月亮", "自由", "文学", "孤独"]},
-    {"id": "courage-1", "quote": "所谓自由，就是被别人讨厌。", "book": "被讨厌的勇气", "author": "岸见一郎", "cover": "#b07b62", "bg_color": "#f2e9e4", "text_color": "#60473b", "passage": "我们并不是为了满足别人的期待而活着。", "tags": ["成长", "焦虑", "自我", "自由"]},
-    {"id": "night-1", "quote": "黑夜无论怎样悠长，白昼总会到来。", "book": "麦克白", "author": "莎士比亚", "cover": "#48556c", "bg_color": "#e4e8ee", "text_color": "#344052", "passage": "黑夜无论怎样悠长，白昼总会到来。", "tags": ["夜", "忧郁", "期待", "文学"]},
+    {"id": "bird-1", "quote": "世界以痛吻我，要我报之以歌。", "book": "飞鸟集", "author": "泰戈尔", "cover": "#c0a040", "bg_color": "#e8f0f2", "text_color": "#3a5a6a", "passage": "世界以痛吻我，要我报之以歌。", "tags": ["积极", "诗歌", "温柔", "悲伤"]},
+    {"id": "ditan-1", "quote": "死是一件不必急于求成的事。", "book": "我与地坛", "author": "史铁生", "cover": "#6a8a5e", "bg_color": "#eaf1e8", "text_color": "#3a5a3a", "passage": "死是一件不必急于求成的事，死是一个必然会降临的节日。", "tags": ["生命", "散文", "无情绪", "成长"]},
+    {"id": "forest-1", "quote": "有些黑暗你没法绕开，只能穿过它。", "book": "挪威的森林", "author": "村上春树", "cover": "#5f86a0", "bg_color": "#e8eef0", "text_color": "#3a4a5a", "passage": "有些黑暗你没法绕开，只能穿过它。穿过它之后，你会成为稍微不同的人。", "tags": ["悲伤", "文学", "成长"]},
+    {"id": "sisyphus-1", "quote": "重要的不是治愈，而是带着病痛活下去。", "book": "西西弗神话", "author": "加缪", "cover": "#9a7a52", "bg_color": "#f0ece4", "text_color": "#4a3a2a", "passage": "在荒诞中保持清醒，本身就是一种反抗。", "tags": ["哲学", "恐惧", "生命", "坚韧"]},
+    {"id": "haizi-1", "quote": "面朝大海，春暖花开。", "book": "海子的诗", "author": "海子", "cover": "#4a80a0", "bg_color": "#e8f0f4", "text_color": "#2a4a6a", "passage": "从明天起，做一个幸福的人。", "tags": ["海", "诗歌", "自由", "积极"]},
+    {"id": "prince-1", "quote": "真正重要的东西，用眼睛是看不见的。", "book": "小王子", "author": "圣埃克苏佩里", "cover": "#c08840", "bg_color": "#f4eddf", "text_color": "#6d5432", "passage": "正因为你为你的玫瑰花费了时间，它才变得如此重要。", "tags": ["童心", "温柔", "文学", "积极"]},
+    {"id": "food-1", "quote": "自由就是成为自己的可能。", "book": "人间食粮", "author": "纪德", "cover": "#8a9a6a", "bg_color": "#edf0e5", "text_color": "#48523d", "passage": "自由并不是逃离，而是成为自己的可能。", "tags": ["自由", "散文", "成长", "积极"]},
+    {"id": "meditations-1", "quote": "困扰人的不是事情本身，而是人们对事情的看法。", "book": "沉思录", "author": "马可·奥勒留", "cover": "#7a6a5a", "bg_color": "#ebe8e2", "text_color": "#50483e", "passage": "你可以在任何时刻回到自己的内心。", "tags": ["哲学", "恐惧", "无情绪", "自我"]},
+    {"id": "walden-1", "quote": "我愿意深深地扎入生活。", "book": "瓦尔登湖", "author": "梭罗", "cover": "#708a68", "bg_color": "#e8efe6", "text_color": "#3d523d", "passage": "我愿意深深地扎入生活，吸取生命中所有的精华。", "tags": ["自然", "无情绪", "散文"]},
+    {"id": "moon-1", "quote": "满地都是六便士，他却抬头看见了月亮。", "book": "月亮与六便士", "author": "毛姆", "cover": "#74658a", "bg_color": "#ece9f2", "text_color": "#4b405d", "passage": "人们随时随地生活在自己的世界里。", "tags": ["月亮", "自由", "文学", "悲伤"]},
+    {"id": "courage-1", "quote": "所谓自由，就是被别人讨厌。", "book": "被讨厌的勇气", "author": "岸见一郎", "cover": "#b07b62", "bg_color": "#f2e9e4", "text_color": "#60473b", "passage": "我们并不是为了满足别人的期待而活着。", "tags": ["成长", "恐惧", "自我", "自由"]},
+    {"id": "night-1", "quote": "黑夜无论怎样悠长，白昼总会到来。", "book": "麦克白", "author": "莎士比亚", "cover": "#48556c", "bg_color": "#e4e8ee", "text_color": "#344052", "passage": "黑夜无论怎样悠长，白昼总会到来。", "tags": ["夜", "悲伤", "惊奇", "文学"]},
 ]
 
 
@@ -227,7 +227,7 @@ def rank_catalog(profile: dict, count: int = 12, offset: int = 0, candidates: li
         if profile.get("crisis_level") != "none":
             if any(word in f"{item['quote']}{item['passage']}" for word in ("死", "病痛", "绝望")):
                 score -= 100.0
-            if set(item["tags"]) & {"治愈", "平静", "温柔", "安静"}:
+            if set(item["tags"]) & {"积极", "无情绪", "温柔"}:
                 score += 15.0
                 reasons.append((15.0, "此刻先给你更平稳、温柔的文字"))
         for tag in item["tags"]:

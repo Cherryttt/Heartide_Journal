@@ -1,0 +1,32 @@
+{
+  "created_date": "2026-09-12",
+  "test_policy": "Test was evaluated only after validation selection of best_classical and best_macbert.",
+  "historical_exposure_note": "This test split is held out for this experiment but is not claimed as historically untouched.",
+  "evaluated_models": [
+    "dummy_most_frequent",
+    "016_logreg_word_char_c1_weightbalanced",
+    "macbert_lr1e-5_seed42_4090"
+  ],
+  "best_classical": "016_logreg_word_char_c1_weightbalanced",
+  "macbert_status": "evaluated",
+  "selected_macbert": {
+    "run_id": "macbert_lr1e-5_seed42_4090",
+    "run_dir": "experiments/emotion_v2/runs/macbert/macbert_lr1e-5_seed42_4090",
+    "checkpoint_dir": "not_in_repository_large_model_artifact",
+    "lr": 1E-05,
+    "best_epoch": 3,
+    "best_validation_macro_f1": 0.7188847780696395,
+    "device_used_for_final_eval": "cpu",
+    "checkpoint_note": "Model weights are excluded from GitHub; restore from local GPU artifact best_checkpoint before deployment."
+  },
+  "primary_final_model": "macbert_lr1e-5_seed42_4090",
+  "test_size": 7719,
+  "label_order": [
+    "neutral",
+    "happy",
+    "sad",
+    "angry",
+    "fear",
+    "surprise"
+  ]
+}

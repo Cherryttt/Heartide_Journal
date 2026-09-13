@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useStore } from '../store';
+import { getEmotionDisplay } from '../emotionMeta';
 
 export default function RecordHistoryPage() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function RecordHistoryPage() {
       ...record.tags,
       ...record.imagery,
       ...record.emotions.map((emotion) => emotion.mood),
+      ...record.emotions.map((emotion) => getEmotionDisplay(emotion.mood)),
     ].includes(tag));
   }, [records, tag]);
 
@@ -46,7 +48,7 @@ export default function RecordHistoryPage() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-[10px] text-warm-400">{date.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' })}</span>
-                  <span className="rounded-xl bg-warm-100 px-2 py-0.5 text-[10px] text-warm-500">{record.emotions[0]?.mood || record.type}</span>
+                  <span className="rounded-xl bg-warm-100 px-2 py-0.5 text-[10px] text-warm-500">{record.emotions[0] ? getEmotionDisplay(record.emotions[0].mood) : record.type}</span>
                 </div>
                 {record.imageUrl && (
                   <div className="mt-3 overflow-hidden rounded-2xl border border-white/70 bg-warm-50">

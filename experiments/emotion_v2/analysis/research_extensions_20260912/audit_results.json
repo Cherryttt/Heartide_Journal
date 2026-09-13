@@ -1,0 +1,541 @@
+{
+  "status": "passed",
+  "n_test": 7719,
+  "seeds": [
+    42,
+    13,
+    2026
+  ],
+  "aggregate": {
+    "accuracy_mean": 0.7806278878956687,
+    "accuracy_sample_std": 0.0017251789398832428,
+    "accuracy_range": [
+      0.7787278144837414,
+      0.7820961264412488
+    ],
+    "macro_f1_mean": 0.73361362889206,
+    "macro_f1_sample_std": 0.002370480634993277,
+    "macro_f1_range": [
+      0.7313139345365565,
+      0.7360490626457867
+    ]
+  },
+  "class_summary": [
+    {
+      "label": "neutral",
+      "support": 1471,
+      "f1_mean": 0.7852034310426731,
+      "f1_sample_std": 0.00491439103591714
+    },
+    {
+      "label": "happy",
+      "support": 2376,
+      "f1_mean": 0.8567126952419918,
+      "f1_sample_std": 0.005187695862937355
+    },
+    {
+      "label": "sad",
+      "support": 1102,
+      "f1_mean": 0.6787795640312442,
+      "f1_sample_std": 0.005187097854152531
+    },
+    {
+      "label": "angry",
+      "support": 1940,
+      "f1_mean": 0.8063043292002015,
+      "f1_sample_std": 0.0018573441462821957
+    },
+    {
+      "label": "fear",
+      "support": 391,
+      "f1_mean": 0.6568171236829939,
+      "f1_sample_std": 0.003090075422142559
+    },
+    {
+      "label": "surprise",
+      "support": 439,
+      "f1_mean": 0.6178646301532561,
+      "f1_sample_std": 0.004566326750197916
+    }
+  ],
+  "domain_summary": [
+    {
+      "domain": "usual",
+      "support": 4962,
+      "macro_f1_mean": 0.7620337591062851,
+      "macro_f1_sample_std": 0.00542819267372041
+    },
+    {
+      "domain": "virus",
+      "support": 2757,
+      "macro_f1_mean": 0.6304115884461273,
+      "macro_f1_sample_std": 0.004752546513295691
+    }
+  ],
+  "correct_seed_count": {
+    "0": 1334,
+    "1": 358,
+    "2": 362,
+    "3": 5665
+  },
+  "all_three_same_wrong": 1159,
+  "seed42_cpu_vs_gpu_changed_predictions": 0,
+  "runs": {
+    "42": {
+      "model_name": "hfl/chinese-macbert-base",
+      "seed": 42,
+      "lr": 1e-05,
+      "epochs_requested": 5,
+      "best_epoch": 3,
+      "device": "NVIDIA GeForce RTX 4090",
+      "train_size": 33844,
+      "validation_size": 3712,
+      "max_length": 256,
+      "batch_size": 16,
+      "effective_batch_size": 32,
+      "seconds": 835.7316479682922
+    },
+    "13": {
+      "model_name": "hfl/chinese-macbert-base",
+      "seed": 13,
+      "lr": 1e-05,
+      "epochs_requested": 5,
+      "best_epoch": 2,
+      "device": "NVIDIA GeForce RTX 4090",
+      "train_size": 33844,
+      "validation_size": 3712,
+      "max_length": 256,
+      "batch_size": 16,
+      "effective_batch_size": 32,
+      "seconds": 674.3910143375397
+    },
+    "2026": {
+      "model_name": "hfl/chinese-macbert-base",
+      "seed": 2026,
+      "lr": 1e-05,
+      "epochs_requested": 5,
+      "best_epoch": 2,
+      "device": "NVIDIA GeForce RTX 4090",
+      "train_size": 33844,
+      "validation_size": 3712,
+      "max_length": 256,
+      "batch_size": 16,
+      "effective_batch_size": 32,
+      "seconds": 674.9286172389984
+    }
+  },
+  "per_seed": {
+    "42": {
+      "accuracy": 0.7787278144837414,
+      "macro_f1": 0.7313139345365565,
+      "per_class": {
+        "neutral": {
+          "precision": 0.7793618465716226,
+          "recall": 0.7804214819850442,
+          "f1": 0.779891304347826,
+          "support": 1471
+        },
+        "happy": {
+          "precision": 0.8340734759790068,
+          "recall": 0.8695286195286195,
+          "f1": 0.8514321038532866,
+          "support": 2376
+        },
+        "sad": {
+          "precision": 0.6603448275862069,
+          "recall": 0.6950998185117967,
+          "f1": 0.6772767462422635,
+          "support": 1102
+        },
+        "angry": {
+          "precision": 0.8389783453636869,
+          "recall": 0.7788659793814433,
+          "f1": 0.8078053996257685,
+          "support": 1940
+        },
+        "fear": {
+          "precision": 0.6523929471032746,
+          "recall": 0.6624040920716112,
+          "f1": 0.6573604060913706,
+          "support": 391
+        },
+        "surprise": {
+          "precision": 0.635036496350365,
+          "recall": 0.5945330296127562,
+          "f1": 0.6141176470588235,
+          "support": 439
+        }
+      },
+      "support": 7719,
+      "domains": {
+        "usual": {
+          "accuracy": 0.7843611446997178,
+          "macro_f1": 0.7580040485816782,
+          "per_class": {
+            "neutral": {
+              "precision": 0.8368580060422961,
+              "recall": 0.8410931174089069,
+              "f1": 0.8389702170620899,
+              "support": 988
+            },
+            "happy": {
+              "precision": 0.7764378478664193,
+              "recall": 0.8222003929273084,
+              "f1": 0.7986641221374046,
+              "support": 1018
+            },
+            "sad": {
+              "precision": 0.6781970649895178,
+              "recall": 0.7196885428253615,
+              "f1": 0.6983270372369131,
+              "support": 899
+            },
+            "angry": {
+              "precision": 0.8642335766423358,
+              "recall": 0.8010825439783491,
+              "f1": 0.8314606741573034,
+              "support": 1478
+            },
+            "fear": {
+              "precision": 0.6830357142857143,
+              "recall": 0.7355769230769231,
+              "f1": 0.7083333333333334,
+              "support": 208
+            },
+            "surprise": {
+              "precision": 0.6997084548104956,
+              "recall": 0.6469002695417789,
+              "f1": 0.6722689075630253,
+              "support": 371
+            }
+          },
+          "support": 4962
+        },
+        "virus": {
+          "accuracy": 0.7685890460645629,
+          "macro_f1": 0.628084523097796,
+          "per_class": {
+            "neutral": {
+              "precision": 0.6604166666666667,
+              "recall": 0.6563146997929606,
+              "f1": 0.6583592938733126,
+              "support": 483
+            },
+            "happy": {
+              "precision": 0.8784846318799142,
+              "recall": 0.9050073637702504,
+              "f1": 0.8915487849111353,
+              "support": 1358
+            },
+            "sad": {
+              "precision": 0.5776699029126213,
+              "recall": 0.5862068965517241,
+              "f1": 0.5819070904645477,
+              "support": 203
+            },
+            "angry": {
+              "precision": 0.7587006960556845,
+              "recall": 0.7077922077922078,
+              "f1": 0.7323628219484882,
+              "support": 462
+            },
+            "fear": {
+              "precision": 0.6127167630057804,
+              "recall": 0.5792349726775956,
+              "f1": 0.5955056179775281,
+              "support": 183
+            },
+            "surprise": {
+              "precision": 0.3088235294117647,
+              "recall": 0.3088235294117647,
+              "f1": 0.3088235294117647,
+              "support": 68
+            }
+          },
+          "support": 2757
+        }
+      }
+    },
+    "13": {
+      "accuracy": 0.7820961264412488,
+      "macro_f1": 0.7360490626457867,
+      "per_class": {
+        "neutral": {
+          "precision": 0.8432432432432433,
+          "recall": 0.7423521414004078,
+          "f1": 0.789587852494577,
+          "support": 1471
+        },
+        "happy": {
+          "precision": 0.8562525965932696,
+          "recall": 0.8674242424242424,
+          "f1": 0.8618022161823123,
+          "support": 2376
+        },
+        "sad": {
+          "precision": 0.6542597187758478,
+          "recall": 0.7177858439201452,
+          "f1": 0.6845521419299004,
+          "support": 1102
+        },
+        "angry": {
+          "precision": 0.8249322493224932,
+          "recall": 0.7845360824742268,
+          "f1": 0.804227212681638,
+          "support": 1940
+        },
+        "fear": {
+          "precision": 0.611353711790393,
+          "recall": 0.7161125319693095,
+          "f1": 0.6595995288574794,
+          "support": 391
+        },
+        "surprise": {
+          "precision": 0.5762376237623762,
+          "recall": 0.662870159453303,
+          "f1": 0.6165254237288136,
+          "support": 439
+        }
+      },
+      "support": 7719,
+      "domains": {
+        "usual": {
+          "accuracy": 0.7904070939137444,
+          "macro_f1": 0.7682063000852988,
+          "per_class": {
+            "neutral": {
+              "precision": 0.8903508771929824,
+              "recall": 0.8218623481781376,
+              "f1": 0.8547368421052631,
+              "support": 988
+            },
+            "happy": {
+              "precision": 0.8219315895372233,
+              "recall": 0.8025540275049116,
+              "f1": 0.8121272365805169,
+              "support": 1018
+            },
+            "sad": {
+              "precision": 0.6716716716716716,
+              "recall": 0.746384872080089,
+              "f1": 0.7070600632244468,
+              "support": 899
+            },
+            "angry": {
+              "precision": 0.8546762589928057,
+              "recall": 0.803788903924222,
+              "f1": 0.8284518828451883,
+              "support": 1478
+            },
+            "fear": {
+              "precision": 0.6576923076923077,
+              "recall": 0.8221153846153846,
+              "f1": 0.7307692307692307,
+              "support": 208
+            },
+            "surprise": {
+              "precision": 0.6461916461916462,
+              "recall": 0.7088948787061995,
+              "f1": 0.6760925449871465,
+              "support": 371
+            }
+          },
+          "support": 4962
+        },
+        "virus": {
+          "accuracy": 0.7671381936887922,
+          "macro_f1": 0.6272710215037082,
+          "per_class": {
+            "neutral": {
+              "precision": 0.7310704960835509,
+              "recall": 0.5797101449275363,
+              "f1": 0.6466512702078522,
+              "support": 483
+            },
+            "happy": {
+              "precision": 0.8803963198867657,
+              "recall": 0.9160530191458026,
+              "f1": 0.8978708047636232,
+              "support": 1358
+            },
+            "sad": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5911330049261084,
+              "f1": 0.5811138014527845,
+              "support": 203
+            },
+            "angry": {
+              "precision": 0.734065934065934,
+              "recall": 0.7229437229437229,
+              "f1": 0.7284623773173392,
+              "support": 462
+            },
+            "fear": {
+              "precision": 0.5505050505050505,
+              "recall": 0.5956284153005464,
+              "f1": 0.5721784776902887,
+              "support": 183
+            },
+            "surprise": {
+              "precision": 0.2857142857142857,
+              "recall": 0.4117647058823529,
+              "f1": 0.3373493975903614,
+              "support": 68
+            }
+          },
+          "support": 2757
+        }
+      }
+    },
+    "2026": {
+      "accuracy": 0.7810597227620159,
+      "macro_f1": 0.733477889493837,
+      "per_class": {
+        "neutral": {
+          "precision": 0.7940360610263523,
+          "recall": 0.778382053025153,
+          "f1": 0.7861311362856161,
+          "support": 1471
+        },
+        "happy": {
+          "precision": 0.8519134775374376,
+          "recall": 0.8619528619528619,
+          "f1": 0.8569037656903765,
+          "support": 2376
+        },
+        "sad": {
+          "precision": 0.6487845766974015,
+          "recall": 0.7023593466424682,
+          "f1": 0.6745098039215687,
+          "support": 1102
+        },
+        "angry": {
+          "precision": 0.816025303110174,
+          "recall": 0.797938144329897,
+          "f1": 0.8068803752931978,
+          "support": 1940
+        },
+        "fear": {
+          "precision": 0.6739130434782609,
+          "recall": 0.6342710997442456,
+          "f1": 0.6534914361001317,
+          "support": 391
+        },
+        "surprise": {
+          "precision": 0.6409638554216868,
+          "recall": 0.6059225512528473,
+          "f1": 0.6229508196721312,
+          "support": 439
+        }
+      },
+      "support": 7719,
+      "domains": {
+        "usual": {
+          "accuracy": 0.7859733978234583,
+          "macro_f1": 0.7598909286518782,
+          "per_class": {
+            "neutral": {
+              "precision": 0.8586171310629515,
+              "recall": 0.8421052631578947,
+              "f1": 0.8502810424118549,
+              "support": 988
+            },
+            "happy": {
+              "precision": 0.806483300589391,
+              "recall": 0.806483300589391,
+              "f1": 0.806483300589391,
+              "support": 1018
+            },
+            "sad": {
+              "precision": 0.6626016260162602,
+              "recall": 0.7252502780867631,
+              "f1": 0.6925119490175252,
+              "support": 899
+            },
+            "angry": {
+              "precision": 0.8423265592151367,
+              "recall": 0.8132611637347767,
+              "f1": 0.827538726333907,
+              "support": 1478
+            },
+            "fear": {
+              "precision": 0.6863636363636364,
+              "recall": 0.7259615384615384,
+              "f1": 0.705607476635514,
+              "support": 208
+            },
+            "surprise": {
+              "precision": 0.7034883720930233,
+              "recall": 0.6522911051212938,
+              "f1": 0.676923076923077,
+              "support": 371
+            }
+          },
+          "support": 4962
+        },
+        "virus": {
+          "accuracy": 0.7722161770039898,
+          "macro_f1": 0.6358792207368779,
+          "per_class": {
+            "neutral": {
+              "precision": 0.6617336152219874,
+              "recall": 0.6480331262939959,
+              "f1": 0.6548117154811716,
+              "support": 483
+            },
+            "happy": {
+              "precision": 0.8852813852813853,
+              "recall": 0.9035346097201767,
+              "f1": 0.8943148688046647,
+              "support": 1358
+            },
+            "sad": {
+              "precision": 0.583732057416268,
+              "recall": 0.6009852216748769,
+              "f1": 0.5922330097087378,
+              "support": 203
+            },
+            "angry": {
+              "precision": 0.7361702127659574,
+              "recall": 0.7489177489177489,
+              "f1": 0.7424892703862661,
+              "support": 462
+            },
+            "fear": {
+              "precision": 0.6554054054054054,
+              "recall": 0.5300546448087432,
+              "f1": 0.5861027190332326,
+              "support": 183
+            },
+            "surprise": {
+              "precision": 0.3380281690140845,
+              "recall": 0.35294117647058826,
+              "f1": 0.34532374100719426,
+              "support": 68
+            }
+          },
+          "support": 2757
+        }
+      }
+    }
+  },
+  "baseline": {
+    "model_id": "016_logreg_word_char_c1_weightbalanced",
+    "accuracy": "0.73416246",
+    "macro_f1": "0.68415343",
+    "surprise_f1": "0.54842220",
+    "support": "7719",
+    "note": "Validation-selected best classical model."
+  },
+  "checks": [
+    "data SHA256",
+    "returned script SHA256",
+    "seed42 metrics SHA256",
+    "unique IDs, labels, domains",
+    "metrics recomputed from 23157 predictions",
+    "per-class/domain scores",
+    "validation-best checkpoints",
+    "new-run configs",
+    "sample SD ddof=1"
+  ]
+}

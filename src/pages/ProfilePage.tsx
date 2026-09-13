@@ -5,25 +5,15 @@ import { useStore } from '../store';
 import type { Mood, UserProfile } from '../types';
 import { clearAuthToken, deleteAccount, listWords } from '../api';
 import { clearSynchronizedLocalState, LOCAL_STATE_CHANGED_EVENT, pushCloudState } from '../cloudSync';
+import { EMOTION_META, getEmotionDisplay, isCanonicalMood } from '../emotionMeta';
 
 const HEAT_COLORS = ['#e8e0d0', '#e0d8c0', '#d8c8a0', '#c8b080', '#b89860', '#a88040'];
 const PORTRAIT_CLOSED_KEY = 'moodgarden-portrait-closed';
 const MONTH_LABELS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 const WORD_CACHE_KEY = 'heartide-word-cache';
-const MOOD_TEXT_COLORS: Record<Mood, string> = {
-  开心: '#d98623',
-  期待: '#c5961a',
-  激动: '#b85b8f',
-  治愈: '#5f9364',
-  平静: '#4d83a6',
-  放松: '#509b9b',
-  忧郁: '#6679a8',
-  焦虑: '#a06aa6',
-  疲惫: '#9a7a5d',
-  孤独: '#596a92',
-  空白: '#8d8d8d',
-  安静: '#68806f',
-};
+const MOOD_TEXT_COLORS: Record<Mood, string> = Object.fromEntries(
+  Object.entries(EMOTION_META).map(([mood, meta]) => [mood, meta.color]),
+) as Record<Mood, string>;
 
 const Shell = ({ children }: { children: ReactNode }) => (
   <div className="absolute inset-0 overflow-y-auto hide-scrollbar bg-gradient-to-b from-[#eaf1f0] via-[#f3eee6] to-[#efe7df]">
@@ -82,9 +72,9 @@ export default function ProfilePage() {
   const profile = useMemo<UserProfile>(() => {
     const moodScores = new Map<Mood, number>();
     records.forEach((record) => record.emotions.forEach((emotion) => {
-      moodScores.set(emotion.mood, (moodScores.get(emotion.mood) || 0) + emotion.probability);
+      if (isCanonicalMood(emotion.mood)) moodScores.set(emotion.mood, (moodScores.get(emotion.mood) || 0) + emotion.probability);
     }));
-    const dominantMood = [...moodScores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '平静';
+    const dominantMood = [...moodScores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '无情绪';
     const moodTotal = [...moodScores.values()].reduce((sum, score) => sum + score, 0);
     const frequentMoods = [...moodScores.entries()]
       .sort((a, b) => b[1] - a[1])
@@ -96,24 +86,18 @@ export default function ProfilePage() {
         color: MOOD_TEXT_COLORS[mood] || '#6f7b68',
       }));
     const animalByMood: Record<Mood, { name: string; emoji: string; traits: string; healing: string }> = {
-      开心: { name: '晨光雀', emoji: '🐦', traits: '明亮 · 好奇 · 愿意分享', healing: '把今天的快乐留一点给明天，你正在发光。' },
-      期待: { name: '追风鹿', emoji: '🦌', traits: '敏锐 · 向前 · 心里有光', healing: '期待不是催促，而是一盏向前亮着的小灯。' },
-      激动: { name: '烟火狐', emoji: '🦊', traits: '热烈 · 灵动 · 充满能量', healing: '让这阵热烈好好经过你，也记得给自己留一点安静。' },
-      治愈: { name: '苔原兔', emoji: '🐇', traits: '柔软 · 复原 · 珍惜微光', healing: '你正在把自己轻轻放回生活里。' },
-      平静: { name: '海边小鹿', emoji: '🦌', traits: '敏感 · 自由 · 温柔', healing: '你不必急着变好，平静本身就是一种抵达。' },
-      放松: { name: '晒太阳的猫', emoji: '🐈', traits: '松弛 · 自在 · 懂得停留', healing: '今天可以慢一点，把呼吸还给自己。' },
-      忧郁: { name: '雨夜鲸', emoji: '🐋', traits: '深沉 · 细腻 · 感受丰沛', healing: '有些情绪像潮汐，而你一直都是海岸。' },
-      焦虑: { name: '抱叶刺猬', emoji: '🦔', traits: '警觉 · 认真 · 渴望安稳', healing: '先只照顾眼前这一分钟，世界可以稍后再处理。' },
-      疲惫: { name: '树洞熊', emoji: '🐻', traits: '坚韧 · 需要休息 · 默默前行', healing: '走到这里已经很不容易，休息不是退后。' },
-      孤独: { name: '月下狼', emoji: '🐺', traits: '独立 · 真诚 · 内心辽阔', healing: '即使独自走着，月光也会认真照亮你。' },
-      空白: { name: '云朵羊', emoji: '🐑', traits: '缓慢 · 留白 · 等待发生', healing: '空白不是没有发生，它也在替你休息。' },
-      安静: { name: '林间猫头鹰', emoji: '🦉', traits: '安静 · 观察 · 内在清醒', healing: '不急着回答，也是一种温柔的清醒。' },
+      无情绪: { name: '静水型', emoji: '○', traits: '留白 · 缓慢 · 暂停', healing: '无波也是一种状态，先让自己安静地停一会儿。' },
+      积极: { name: '向光型', emoji: '✦', traits: '明亮 · 开展 · 愿意靠近', healing: '把今天的光留一点给明天，你正在向前。' },
+      悲伤: { name: '雨声型', emoji: '☔', traits: '细腻 · 柔软 · 感受丰沛', healing: '低落可以慢慢经过你，不必急着把它赶走。' },
+      愤怒: { name: '火线型', emoji: '◇', traits: '清醒 · 有边界 · 需要表达', healing: '这份愠怒也许在提醒你：有些边界值得被看见。' },
+      恐惧: { name: '雾灯型', emoji: '◆', traits: '敏锐 · 谨慎 · 渴望安稳', healing: '惶然的时候，先把脚下这一小步照亮。' },
+      惊奇: { name: '星点型', emoji: '✧', traits: '开放 · 被触动 · 重新看见', healing: '意外忽然推开门，世界露出另一种纹理。' },
     };
     const animal = animalByMood[dominantMood];
 
     const imageryCounts = new Map<string, number>();
     records.forEach((record) => [...record.imagery, ...record.tags].forEach((item) => {
-      if (item && item !== dominantMood) imageryCounts.set(item, (imageryCounts.get(item) || 0) + 1);
+      if (item && item !== dominantMood && item !== getEmotionDisplay(dominantMood)) imageryCounts.set(item, (imageryCounts.get(item) || 0) + 1);
     }));
     const frequentImagery = [...imageryCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12).map(([item]) => item);
 
@@ -122,8 +106,10 @@ export default function ProfilePage() {
       date.setDate(date.getDate() - (6 - index));
       const sameDay = records.filter((record) => new Date(record.createdAt).toDateString() === date.toDateString());
       const scores = new Map<Mood, number>();
-      sameDay.forEach((record) => record.emotions.forEach((emotion) => scores.set(emotion.mood, (scores.get(emotion.mood) || 0) + emotion.probability)));
-      return [...scores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '空白';
+      sameDay.forEach((record) => record.emotions.forEach((emotion) => {
+        if (isCanonicalMood(emotion.mood)) scores.set(emotion.mood, (scores.get(emotion.mood) || 0) + emotion.probability);
+      }));
+      return [...scores.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || '无情绪';
     });
 
     const platformCategories = new Set(['微信读书', '微信读书导入', '微信读书同步', '书架', '其它']);
@@ -143,13 +129,13 @@ export default function ProfilePage() {
       .slice(0, 4)
       .map(([category, count]) => ({ category, percentage: Math.round((count / Math.max(categoryTotal, 1)) * 100) }));
     const recommendedAuthors = [...new Set(books.map((book) => book.author).filter(Boolean))].slice(0, 5);
-    const moodText = frequentMoods.slice(0, 2).map((item) => item.mood).join('」与「') || dominantMood;
+    const moodText = frequentMoods.slice(0, 2).map((item) => getEmotionDisplay(item.mood)).join('」与「') || getEmotionDisplay(dominantMood);
 
     return {
       animalType: animal.name,
       animalEmoji: animal.emoji,
-      description: `${animal.traits}\n最近最常出现的情绪是「${dominantMood}」。`,
-      personality: `从你的 ${records.length} 条记录里，系统常常读到「${dominantMood}」，也看见「${moodText}」反复浮现。这不是给你下定义，而是此刻留下的一张情绪切片；新的记录会让它继续变化。`,
+      description: `${animal.traits}\n最近最常出现的情绪是「${getEmotionDisplay(dominantMood)}」。`,
+      personality: `从你的 ${records.length} 条记录里，系统常常读到「${getEmotionDisplay(dominantMood)}」，也看见「${moodText}」反复浮现。这不是给你下定义，而是此刻留下的一张情绪切片；新的记录会让它继续变化。`,
       frequentImagery,
       frequentMoods,
       emotionTrend,
@@ -380,7 +366,7 @@ export default function ProfilePage() {
               const sizes = [28, 22, 18, 24, 16, 20, 15, 17];
               return (
                 <span key={item.mood} className="font-hand cursor-default drop-shadow-[0_1px_0_rgba(255,255,255,.75)]" style={{ color: item.color, fontSize: `${sizes[i] || 16}px`, opacity: 0.78 + (i % 3) * 0.08 }}>
-                  {item.mood}
+                  {getEmotionDisplay(item.mood)}
                   <small className="ml-1 font-sans text-[10px] opacity-55">{item.percentage}%</small>
                 </span>
               );
@@ -397,12 +383,7 @@ export default function ProfilePage() {
             <span className="text-[10px] text-warm-400">近 4 周</span>
           </div>
           {(() => {
-            const moodColors: Record<string, string> = {
-              '开心': '#f0a040', '期待': '#c0a040', '激动': '#e06060',
-              '治愈': '#8ab84a', '平静': '#6fa9c4', '放松': '#7fb0c4',
-              '忧郁': '#6a8a9a', '焦虑': '#a080b0', '疲惫': '#8a7a6a',
-              '孤独': '#5a6a8a', '空白': '#a0a0a0', '安静': '#4a5a7a',
-            };
+            const moodColors: Record<string, string> = MOOD_TEXT_COLORS;
             const heights = [60, 50, 70, 30, 20, 65, 55];
             const labels = ['一', '二', '三', '四', '五', '六', '日'];
             return (
@@ -414,7 +395,7 @@ export default function ProfilePage() {
                       key={i}
                       className="flex-1 rounded-full transition-all"
                       style={{ height: `${heights[i]}%`, backgroundColor: moodColors[mood] || '#ccc' }}
-                      title={mood}
+                      title={getEmotionDisplay(mood)}
                     />
                   ))}
                 </div>

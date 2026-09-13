@@ -1,25 +1,25 @@
 [
   {
     "text": "我一点也不焦虑，终于把事情做完了",
-    "forbidden_top": "焦虑",
-    "expect_fallback": true,
+    "forbidden_top": "恐惧",
+    "expect_fallback": false,
     "risk_level": "none"
   },
   {
     "text": "晚上一个人在出租屋，事情太多了，有点喘不过气",
-    "expected_any": ["焦虑", "孤独", "忧郁"],
+    "expected_any": ["恐惧", "悲伤"],
     "expect_fallback": false,
     "risk_level": "none"
   },
   {
     "text": "天气很好，我却什么感觉都没有",
-    "expected_any": ["空白", "疲惫", "忧郁"],
-    "expect_fallback": true,
+    "expected_any": ["无情绪"],
+    "expect_fallback": false,
     "risk_level": "none"
   },
   {
     "text": "什么都不想说，只想消失",
-    "expected_any": ["空白", "疲惫", "忧郁"],
+    "expected_any": ["无情绪", "悲伤"],
     "risk_level": "elevated"
   },
   {
