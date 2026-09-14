@@ -5,9 +5,9 @@ a FastAPI backend, and a Capacitor Android shell. It helps users record moods,
 build visual journals, manage reading notes, and get AI-assisted reflection and
 recommendations.
 
-The repository is currently private and contains the complete app source for
-local web development, backend API development, Android builds, and Docker-based
-deployment.
+This public repository contains a sanitized version of the project source and
+reproducibility materials for local web development, backend API development,
+Android builds, and Docker-based deployment.
 
 ## Features
 
@@ -57,12 +57,13 @@ The committed materials include aggregate metrics, reports, confusion matrices,
 and reproducibility scripts. Raw train/validation/test text, per-sample
 predictions, manual review samples, local paths, and model weights are excluded.
 
-Final frozen-test result for the selected MacBERT checkpoint:
+Final frozen-test results are reported at two levels:
 
 ```text
-Accuracy   0.77872781
-Macro-F1   0.73131393
-惊奇 F1    0.61411765
+Three-seed mean                 Macro-F1 0.7336 ± 0.0024
+Selected frozen-test checkpoint Accuracy  0.77872781
+Selected frozen-test checkpoint Macro-F1  0.73131393
+Selected frozen-test checkpoint 惊奇 F1   0.61411765
 ```
 
 ## Prerequisites
